@@ -1,12 +1,12 @@
-import { Static, Type } from "@sinclair/typebox";
-import { PostSchema } from "./ressource.types.js";
-import { TypeCompiler } from "@sinclair/typebox/compiler";
+import { type Static, Type } from '@sinclair/typebox';
+import { TypeCompiler } from '@sinclair/typebox/compiler';
+import { PostSchema } from './ressource.types.js';
 
 export const UserPostApiResponseSchema = Type.Composite([
-  PostSchema,
-  Type.Object({
-    object: Type.Literal("Post"),
-  }),
+	PostSchema,
+	Type.Object({
+		object: Type.Literal('Post'),
+	}),
 ]);
 
 export type UserPostApiResponse = Static<typeof UserPostApiResponseSchema>;

@@ -5,21 +5,21 @@ import { MessagingResource } from './resources/messaging.resource.js';
 import { UsersResource } from './resources/users.resource.js';
 import { WebhookResource } from './resources/webhook.resource.js';
 import { ClientState } from './state.js';
-import { ClientInstantiationOptions } from './types/client.js';
+import type { ClientInstantiationOptions } from './types/client.js';
 
 export class UnipileClient {
-  private state: ClientState;
-  public request: RequestSender;
+	private state: ClientState;
+	public request: RequestSender;
 
-  //resources
-  public account = new AccountResource(this);
-  public messaging = new MessagingResource(this);
-  public users = new UsersResource(this);
-  public email = new EmailResource(this);
-  public webhook = new WebhookResource(this);
+	//resources
+	public account = new AccountResource(this);
+	public messaging = new MessagingResource(this);
+	public users = new UsersResource(this);
+	public email = new EmailResource(this);
+	public webhook = new WebhookResource(this);
 
-  constructor(baseUrl: string, token: string, options?: ClientInstantiationOptions) {
-    this.state = new ClientState(baseUrl, token, options ?? {});
-    this.request = new RequestSender(this.state);
-  }
+	constructor(baseUrl: string, token: string, options?: ClientInstantiationOptions) {
+		this.state = new ClientState(baseUrl, token, options ?? {});
+		this.request = new RequestSender(this.state);
+	}
 }

@@ -1,10 +1,14 @@
-import { Static, Type } from '@sinclair/typebox';
+import { type Static, Type } from '@sinclair/typebox';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
-import { i18n } from '../../common/i18n.fake.js';
 import { UniqueIdSchema } from '../../common/common.types.js';
-import { RequiredProps } from '../../common/core.types.tmp.js';
+import type { RequiredProps } from '../../common/core.types.tmp.js';
+import { i18n } from '../../common/i18n.fake.js';
 import { EncodedQueryCursorType } from '../../common/query-cursor.js';
-import { AccountIdParamSchema, ListCursorQuerySchema, ListLimitQuerySchema } from '../../common/query-parameters.type.js';
+import {
+	AccountIdParamSchema,
+	ListCursorQuerySchema,
+	ListLimitQuerySchema,
+} from '../../common/query-parameters.type.js';
 import { ChatAttendeeSchema } from './ressource.types.js';
 
 // --------------------------------------------------------------------------
@@ -15,7 +19,7 @@ import { ChatAttendeeSchema } from './ressource.types.js';
  *
  */
 export const ChatAttendeeListOptionsQuerySchema = Type.Object({
-  account_id: Type.Optional(AccountIdParamSchema),
+	account_id: Type.Optional(AccountIdParamSchema),
 });
 
 export type ChatListOptionsQuery = Static<typeof ChatAttendeeListOptionsQuerySchema>;
@@ -24,32 +28,40 @@ export type ChatListOptionsQuery = Static<typeof ChatAttendeeListOptionsQuerySch
  *
  */
 export const ChatAttendeeListDecodedCursorSchema = Type.Composite([
-  ChatAttendeeListOptionsQuerySchema,
-  Type.Required(ListLimitQuerySchema),
-  Type.Object({
-    cursor: Type.Object({
-      last_id: UniqueIdSchema,
-    }),
-  }),
+	ChatAttendeeListOptionsQuerySchema,
+	Type.Required(ListLimitQuerySchema),
+	Type.Object({
+		cursor: Type.Object({
+			last_id: UniqueIdSchema,
+		}),
+	}),
 ]);
 
 export type ChatAttendeeListDecodedCursor = Static<typeof ChatAttendeeListDecodedCursorSchema>;
 
-export const ChatAttendeeListDecodedCursorValidator = TypeCompiler.Compile(ChatAttendeeListDecodedCursorSchema);
+export const ChatAttendeeListDecodedCursorValidator = TypeCompiler.Compile(
+	ChatAttendeeListDecodedCursorSchema
+);
 
 /**
  *
  */
-export const ChatAttendeeListBaseQuerySchema = Type.Composite([ChatAttendeeListOptionsQuerySchema, ListLimitQuerySchema]);
+export const ChatAttendeeListBaseQuerySchema = Type.Composite([
+	ChatAttendeeListOptionsQuerySchema,
+	ListLimitQuerySchema,
+]);
 
 export type ChatAttendeeListBaseQuery = Static<typeof ChatAttendeeListBaseQuerySchema>;
 
 /**
  *
  */
-export const ChatAttendeeListQuerySchema = Type.Union([ChatAttendeeListBaseQuerySchema, ListCursorQuerySchema], {
-  description: i18n.t('@todo api.Query.Cursor.ignore_other_params'),
-});
+export const ChatAttendeeListQuerySchema = Type.Union(
+	[ChatAttendeeListBaseQuerySchema, ListCursorQuerySchema],
+	{
+		description: i18n.t('@todo api.Query.Cursor.ignore_other_params'),
+	}
+);
 
 export type ChatAttendeeListQuery = Static<typeof ChatAttendeeListQuerySchema>;
 
@@ -69,8 +81,8 @@ export const ChatAttendeeListQueryValidator = TypeCompiler.Compile(ChatAttendeeL
  *
  */
 export type ChatAttendeeListQueryDTO =
-  | RequiredProps<ChatAttendeeListBaseQuery, 'limit'>
-  | { cursor: ChatAttendeeListDecodedCursor };
+	| RequiredProps<ChatAttendeeListBaseQuery, 'limit'>
+	| { cursor: ChatAttendeeListDecodedCursor };
 
 // --------------------------------------------------------------------------
 // RESPONSE
@@ -80,9 +92,11 @@ export type ChatAttendeeListQueryDTO =
  *
  */
 export const ChatAttendeeListApiResponseSchema = Type.Object({
-  object: Type.Literal('ChatAttendeeList'),
-  items: Type.Array(Type.Composite([Type.Object({ object: Type.Literal('ChatAttendee') }), ChatAttendeeSchema])),
-  cursor: Type.Union([EncodedQueryCursorType(), Type.Null()]),
+	object: Type.Literal('ChatAttendeeList'),
+	items: Type.Array(
+		Type.Composite([Type.Object({ object: Type.Literal('ChatAttendee') }), ChatAttendeeSchema])
+	),
+	cursor: Type.Union([EncodedQueryCursorType(), Type.Null()]),
 });
 
 export type ChatAttendeeListApiResponse = Static<typeof ChatAttendeeListApiResponseSchema>;
@@ -93,8 +107,14 @@ export type ChatAttendeeByChatListApiResponse = Omit<ChatAttendeeListApiResponse
 //   ChatAttendeeListApiResponseSchema
 // );
 
-export const ChatAttendeeByChatListApiResponse = Type.Omit(ChatAttendeeListApiResponseSchema, ['cursor']);
+export const ChatAttendeeByChatListApiResponse = Type.Omit(ChatAttendeeListApiResponseSchema, [
+	'cursor',
+]);
 
 /**  */
-export const ChatAttendeeListApiResponseValidator = TypeCompiler.Compile(ChatAttendeeListApiResponseSchema);
-export const ChatAttendeeByChatListApiResponseValidator = TypeCompiler.Compile(ChatAttendeeByChatListApiResponse);
+export const ChatAttendeeListApiResponseValidator = TypeCompiler.Compile(
+	ChatAttendeeListApiResponseSchema
+);
+export const ChatAttendeeByChatListApiResponseValidator = TypeCompiler.Compile(
+	ChatAttendeeByChatListApiResponse
+);

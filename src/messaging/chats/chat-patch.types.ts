@@ -1,6 +1,6 @@
-import { Static, Type } from "@sinclair/typebox";
-import { TypeCompiler } from "@sinclair/typebox/compiler";
-import { UniqueId } from "../../common/common.types.js";
+import { type Static, Type } from '@sinclair/typebox';
+import { TypeCompiler } from '@sinclair/typebox/compiler';
+import type { UniqueId } from '../../common/common.types.js';
 
 // --------------------------------------------------------------------------
 // REQUEST
@@ -10,13 +10,13 @@ import { UniqueId } from "../../common/common.types.js";
  *
  */
 export const ChatPatchBodySchema = Type.Union([
-  Type.Object(
-    {
-      action: Type.Literal("setReadStatus"),
-      value: Type.Boolean(),
-    },
-    { description: "Set new chat read status" }
-  ),
+	Type.Object(
+		{
+			action: Type.Literal('setReadStatus'),
+			value: Type.Boolean(),
+		},
+		{ description: 'Set new chat read status' }
+	),
 ]);
 
 export type ChatPatchBody = Static<typeof ChatPatchBodySchema>;
@@ -33,7 +33,7 @@ export type ChatPatchBody = Static<typeof ChatPatchBodySchema>;
 export const ChatPatchBodyValidator = TypeCompiler.Compile(ChatPatchBodySchema);
 
 export type ChatPatchDTO = {
-  chat_id: UniqueId;
+	chat_id: UniqueId;
 } & ChatPatchBody;
 
 // --------------------------------------------------------------------------
@@ -41,12 +41,10 @@ export type ChatPatchDTO = {
 // --------------------------------------------------------------------------
 
 export const ChatPatchedApiResponseSchema = Type.Object({
-  object: Type.Literal("ChatPatched"),
+	object: Type.Literal('ChatPatched'),
 });
 
-export type ChatPatchedApiResponse = Static<
-  typeof ChatPatchedApiResponseSchema
->;
+export type ChatPatchedApiResponse = Static<typeof ChatPatchedApiResponseSchema>;
 
 // /**
 //  *

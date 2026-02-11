@@ -1,6 +1,6 @@
-import { Static, Type } from "@sinclair/typebox";
-import { MessageSchema } from "./ressource.types.js";
-import { TypeCompiler } from "@sinclair/typebox/compiler";
+import { type Static, Type } from '@sinclair/typebox';
+import { TypeCompiler } from '@sinclair/typebox/compiler';
+import { MessageSchema } from './ressource.types.js';
 
 // --------------------------------------------------------------------------
 // RESPONSE
@@ -10,10 +10,10 @@ import { TypeCompiler } from "@sinclair/typebox/compiler";
  *
  */
 export const MessageResponseSchema = Type.Composite([
-  MessageSchema,
-  Type.Object({
-    object: Type.Literal("Message"),
-  }),
+	MessageSchema,
+	Type.Object({
+		object: Type.Literal('Message'),
+	}),
 ]);
 
 export type MessageResponse = Static<typeof MessageResponseSchema>;

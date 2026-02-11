@@ -1,318 +1,369 @@
 import {
-  GetAllAttendeesInput,
-  GetAllChatsInput,
-  GetAllMessagesFromChatInput,
-  GetAllMessagesInput,
-  GetMessageAttachementInput,
-  PostMessageInput,
-  RequestOptions,
-  untypedYetValidator,
-  UnipileClient,
-  GetAllMessagesFromAttendeeInput,
-  GetAllChatsFromAttendeeInput,
-  PostNewChatInput,
-  PerformActionInput,
-  isLinkedinClassicPostNewChatInputOptions,
-  isLinkedinRecruiterPostNewChatInputOptions,
+	type GetAllAttendeesInput,
+	type GetAllChatsFromAttendeeInput,
+	type GetAllChatsInput,
+	type GetAllMessagesFromAttendeeInput,
+	type GetAllMessagesFromChatInput,
+	type GetAllMessagesInput,
+	type GetMessageAttachementInput,
+	type PerformActionInput,
+	type PostMessageInput,
+	type PostNewChatInput,
+	type RequestOptions,
+	type UnipileClient,
+	isLinkedinClassicPostNewChatInputOptions,
+	isLinkedinRecruiterPostNewChatInputOptions,
+	untypedYetValidator,
 } from '../index.js';
-import { ChatListApiResponse, ChatListApiResponseValidator } from '../messaging/chats/chats-list.types.js';
-import { ChatResponse, ChatResponseValidator } from '../messaging/chats/chat.types.js';
-import { MessageListApiResponse, MessageListApiResponseValidator } from '../messaging/messages/message-list.types.js';
-import { MessageSentResponse, MessageSentResponseValidator } from '../messaging/messages/message-send.types.js';
-import { ChatStartedApiResponse, ChatStartedApiResponseValidator } from '../messaging/chats/chat-start.types.js';
 import {
-  ChatAttendeeByChatListApiResponse,
-  ChatAttendeeByChatListApiResponseValidator,
-  ChatAttendeeListApiResponse,
-  ChatAttendeeListApiResponseValidator,
+	type ChatAttendeeResponse,
+	ChatAttendeeResponseValidator,
+} from '../messaging/chat-attendees/chat-attendee.types.js';
+import {
+	type ChatAttendeeByChatListApiResponse,
+	ChatAttendeeByChatListApiResponseValidator,
+	type ChatAttendeeListApiResponse,
+	ChatAttendeeListApiResponseValidator,
 } from '../messaging/chat-attendees/chat-attendees-list.types.js';
-import { MessageResponse, MessageResponseValidator } from '../messaging/messages/message.types.js';
-import { ChatAttendeeResponse, ChatAttendeeResponseValidator } from '../messaging/chat-attendees/chat-attendee.types.js';
-import { ChatPatchedApiResponse, ChatPatchedApiResponseValidator } from '../messaging/chats/chat-patch.types.js';
+import {
+	type ChatPatchedApiResponse,
+	ChatPatchedApiResponseValidator,
+} from '../messaging/chats/chat-patch.types.js';
+import {
+	type ChatStartedApiResponse,
+	ChatStartedApiResponseValidator,
+} from '../messaging/chats/chat-start.types.js';
+import { type ChatResponse, ChatResponseValidator } from '../messaging/chats/chat.types.js';
+import {
+	type ChatListApiResponse,
+	ChatListApiResponseValidator,
+} from '../messaging/chats/chats-list.types.js';
+import {
+	type MessageListApiResponse,
+	MessageListApiResponseValidator,
+} from '../messaging/messages/message-list.types.js';
+import {
+	type MessageSentResponse,
+	MessageSentResponseValidator,
+} from '../messaging/messages/message-send.types.js';
+import {
+	type MessageResponse,
+	MessageResponseValidator,
+} from '../messaging/messages/message.types.js';
 
 export class MessagingResource {
-  constructor(private client: UnipileClient) {}
+	constructor(private client: UnipileClient) {}
 
-  async getAllChats(input: GetAllChatsInput = {}, options?: RequestOptions): Promise<ChatListApiResponse> {
-    const { before, after, limit, account_type, account_id, cursor, unread } = input;
+	async getAllChats(
+		input: GetAllChatsInput = {},
+		options?: RequestOptions
+	): Promise<ChatListApiResponse> {
+		const { before, after, limit, account_type, account_id, cursor, unread } = input;
 
-    const parameters: Record<string, string> = { ...options?.extra_params };
-    if (before) parameters.before = before;
-    if (after) parameters.after = after;
-    if (limit) parameters.limit = String(limit);
-    if (account_type) parameters.account_type = account_type;
-    if (account_id) parameters.account_id = account_id;
-    if (cursor) parameters.cursor = cursor;
-    if (unread !== undefined) parameters.unread = unread ? 'true' : 'false';
+		const parameters: Record<string, string> = { ...options?.extra_params };
+		if (before) parameters.before = before;
+		if (after) parameters.after = after;
+		if (limit) parameters.limit = String(limit);
+		if (account_type) parameters.account_type = account_type;
+		if (account_id) parameters.account_id = account_id;
+		if (cursor) parameters.cursor = cursor;
+		if (unread !== undefined) parameters.unread = unread ? 'true' : 'false';
 
-    return await this.client.request.send({
-      path: ['chats'],
-      method: 'GET',
-      options,
-      parameters,
-      validator: ChatListApiResponseValidator,
-    });
-  }
+		return await this.client.request.send({
+			path: ['chats'],
+			method: 'GET',
+			options,
+			parameters,
+			validator: ChatListApiResponseValidator,
+		});
+	}
 
-  async getChat(chatId: string, options?: RequestOptions): Promise<ChatResponse> {
-    return await this.client.request.send({
-      path: ['chats', chatId],
-      method: 'GET',
-      options,
-      ...(options?.extra_params && { parameters: options.extra_params }),
-      validator: ChatResponseValidator,
-    });
-  }
+	async getChat(chatId: string, options?: RequestOptions): Promise<ChatResponse> {
+		return await this.client.request.send({
+			path: ['chats', chatId],
+			method: 'GET',
+			options,
+			...(options?.extra_params && { parameters: options.extra_params }),
+			validator: ChatResponseValidator,
+		});
+	}
 
-  async getAllMessagesFromChat(input: GetAllMessagesFromChatInput, options?: RequestOptions): Promise<MessageListApiResponse> {
-    const { chat_id, sender_id, before, after, limit, cursor } = input;
+	async getAllMessagesFromChat(
+		input: GetAllMessagesFromChatInput,
+		options?: RequestOptions
+	): Promise<MessageListApiResponse> {
+		const { chat_id, sender_id, before, after, limit, cursor } = input;
 
-    const parameters: Record<string, string> = { ...options?.extra_params };
-    if (sender_id) parameters.sender_id = sender_id;
-    if (before) parameters.before = before;
-    if (after) parameters.after = after;
-    if (limit) parameters.limit = String(limit);
-    if (cursor) parameters.cursor = cursor;
+		const parameters: Record<string, string> = { ...options?.extra_params };
+		if (sender_id) parameters.sender_id = sender_id;
+		if (before) parameters.before = before;
+		if (after) parameters.after = after;
+		if (limit) parameters.limit = String(limit);
+		if (cursor) parameters.cursor = cursor;
 
-    return await this.client.request.send({
-      path: ['chats', chat_id, 'messages'],
-      method: 'GET',
-      parameters,
-      options,
-      validator: MessageListApiResponseValidator,
-    });
-  }
+		return await this.client.request.send({
+			path: ['chats', chat_id, 'messages'],
+			method: 'GET',
+			parameters,
+			options,
+			validator: MessageListApiResponseValidator,
+		});
+	}
 
-  async sendMessage(input: PostMessageInput, options?: RequestOptions): Promise<MessageSentResponse> {
-    const { chat_id, text, thread_id, attachments } = input;
-    const body = new FormData();
+	async sendMessage(
+		input: PostMessageInput,
+		options?: RequestOptions
+	): Promise<MessageSentResponse> {
+		const { chat_id, text, thread_id, attachments } = input;
+		const body = new FormData();
 
-    body.append('text', text);
-    if (thread_id) body.append('thread_id', thread_id);
+		body.append('text', text);
+		if (thread_id) body.append('thread_id', thread_id);
 
-    if (attachments !== undefined) {
-      for (const [filename, buffer] of attachments) {
-        body.append('attachments', new Blob([buffer]), filename);
-      }
-    }
+		if (attachments !== undefined) {
+			for (const [filename, buffer] of attachments) {
+				body.append('attachments', new Blob([buffer]), filename);
+			}
+		}
 
-    if (options?.extra_params) {
-      Object.entries(options.extra_params).forEach(([k, v]) => {
-        if (!body.has(k)) {
-          body.append(k, v);
-        }
-      });
-    }
+		if (options?.extra_params) {
+			Object.entries(options.extra_params).forEach(([k, v]) => {
+				if (!body.has(k)) {
+					body.append(k, v);
+				}
+			});
+		}
 
-    return await this.client.request.send({
-      path: ['chats', chat_id, 'messages'],
-      method: 'POST',
-      body,
-      headers: {},
-      options,
-      validator: MessageSentResponseValidator,
-    });
-  }
+		return await this.client.request.send({
+			path: ['chats', chat_id, 'messages'],
+			method: 'POST',
+			body,
+			headers: {},
+			options,
+			validator: MessageSentResponseValidator,
+		});
+	}
 
-  async startNewChat(input: PostNewChatInput, options?: RequestOptions): Promise<ChatStartedApiResponse> {
-    const { account_id, text, subject, options: input_options, attendees_ids, attachments } = input;
-    const body = new FormData();
+	async startNewChat(
+		input: PostNewChatInput,
+		options?: RequestOptions
+	): Promise<ChatStartedApiResponse> {
+		const { account_id, text, subject, options: input_options, attendees_ids, attachments } = input;
+		const body = new FormData();
 
-    body.append('account_id', account_id);
-    body.append('text', text);
-    for (const id of attendees_ids) body.append('attendees_ids', id);
+		body.append('account_id', account_id);
+		body.append('text', text);
+		for (const id of attendees_ids) body.append('attendees_ids', id);
 
-    if (subject) body.append('subject', subject);
+		if (subject) body.append('subject', subject);
 
-    if (input_options) {
-      if (input_options.linkedin) {
-        if (input_options.linkedin.api !== undefined) {
-          body.append('linkedin[api]', input_options.linkedin.api);
-        }
+		if (input_options) {
+			if (input_options.linkedin) {
+				if (input_options.linkedin.api !== undefined) {
+					body.append('linkedin[api]', input_options.linkedin.api);
+				}
 
-        if (isLinkedinClassicPostNewChatInputOptions(input_options.linkedin)) {
-          if (input_options.linkedin.inmail !== undefined) {
-            body.append('linkedin[inmail]', input_options.linkedin.inmail ? 'true' : 'false');
-          }
-        }
+				if (isLinkedinClassicPostNewChatInputOptions(input_options.linkedin)) {
+					if (input_options.linkedin.inmail !== undefined) {
+						body.append('linkedin[inmail]', input_options.linkedin.inmail ? 'true' : 'false');
+					}
+				}
 
-        if (isLinkedinRecruiterPostNewChatInputOptions(input_options.linkedin)) {
-          if (input_options.linkedin.signature !== undefined) {
-            body.append('linkedin[signature]', input_options.linkedin.signature);
-          }
+				if (isLinkedinRecruiterPostNewChatInputOptions(input_options.linkedin)) {
+					if (input_options.linkedin.signature !== undefined) {
+						body.append('linkedin[signature]', input_options.linkedin.signature);
+					}
 
-          if (input_options.linkedin.hiring_project_id !== undefined) {
-            body.append('linkedin[hiring_project_id]', input_options.linkedin.hiring_project_id);
-          }
+					if (input_options.linkedin.hiring_project_id !== undefined) {
+						body.append('linkedin[hiring_project_id]', input_options.linkedin.hiring_project_id);
+					}
 
-          if (input_options.linkedin.email_address !== undefined) {
-            body.append('linkedin[email_address]', input_options.linkedin.email_address);
-          }
-        }
-      }
-    }
+					if (input_options.linkedin.email_address !== undefined) {
+						body.append('linkedin[email_address]', input_options.linkedin.email_address);
+					}
+				}
+			}
+		}
 
-    if (attachments !== undefined) {
-      for (const [filename, buffer] of attachments) {
-        body.append('attachments', new Blob([buffer]), filename);
-      }
-    }
+		if (attachments !== undefined) {
+			for (const [filename, buffer] of attachments) {
+				body.append('attachments', new Blob([buffer]), filename);
+			}
+		}
 
-    if (options?.extra_params) {
-      Object.entries(options.extra_params).forEach(([k, v]) => {
-        if (!body.has(k)) {
-          body.append(k, v);
-        }
-      });
-    }
+		if (options?.extra_params) {
+			Object.entries(options.extra_params).forEach(([k, v]) => {
+				if (!body.has(k)) {
+					body.append(k, v);
+				}
+			});
+		}
 
-    return await this.client.request.send({
-      path: ['chats'],
-      method: 'POST',
-      body,
-      headers: {},
-      options,
-      validator: ChatStartedApiResponseValidator,
-    });
-  }
+		return await this.client.request.send({
+			path: ['chats'],
+			method: 'POST',
+			body,
+			headers: {},
+			options,
+			validator: ChatStartedApiResponseValidator,
+		});
+	}
 
-  async getAllAttendeesFromChat(chat_id: string, options?: RequestOptions): Promise<ChatAttendeeByChatListApiResponse> {
-    return await this.client.request.send({
-      path: ['chats', chat_id, 'attendees'],
-      method: 'GET',
-      options,
-      ...(options?.extra_params && { parameters: options.extra_params }),
-      validator: ChatAttendeeByChatListApiResponseValidator,
-    });
-  }
+	async getAllAttendeesFromChat(
+		chat_id: string,
+		options?: RequestOptions
+	): Promise<ChatAttendeeByChatListApiResponse> {
+		return await this.client.request.send({
+			path: ['chats', chat_id, 'attendees'],
+			method: 'GET',
+			options,
+			...(options?.extra_params && { parameters: options.extra_params }),
+			validator: ChatAttendeeByChatListApiResponseValidator,
+		});
+	}
 
-  async getMessage(message_id: string, options?: RequestOptions): Promise<MessageResponse> {
-    return await this.client.request.send({
-      path: ['messages', message_id],
-      method: 'GET',
-      options,
-      ...(options?.extra_params && { parameters: options.extra_params }),
-      validator: MessageResponseValidator,
-    });
-  }
+	async getMessage(message_id: string, options?: RequestOptions): Promise<MessageResponse> {
+		return await this.client.request.send({
+			path: ['messages', message_id],
+			method: 'GET',
+			options,
+			...(options?.extra_params && { parameters: options.extra_params }),
+			validator: MessageResponseValidator,
+		});
+	}
 
-  async getAllMessages(input: GetAllMessagesInput = {}, options?: RequestOptions): Promise<MessageListApiResponse> {
-    const { before, after, limit, sender_id, account_id, cursor } = input;
+	async getAllMessages(
+		input: GetAllMessagesInput = {},
+		options?: RequestOptions
+	): Promise<MessageListApiResponse> {
+		const { before, after, limit, sender_id, account_id, cursor } = input;
 
-    const parameters: Record<string, string> = {...options?.extra_params };
-    if (before) parameters.before = before;
-    if (after) parameters.after = after;
-    if (limit) parameters.limit = String(limit);
-    if (sender_id) parameters.sender_id = sender_id;
-    if (account_id) parameters.account_id = account_id;
-    if (cursor) parameters.cursor = cursor;
+		const parameters: Record<string, string> = { ...options?.extra_params };
+		if (before) parameters.before = before;
+		if (after) parameters.after = after;
+		if (limit) parameters.limit = String(limit);
+		if (sender_id) parameters.sender_id = sender_id;
+		if (account_id) parameters.account_id = account_id;
+		if (cursor) parameters.cursor = cursor;
 
-    return await this.client.request.send({
-      path: ['messages'],
-      method: 'GET',
-      parameters,
-      options,
-      validator: MessageListApiResponseValidator,
-    });
-  }
+		return await this.client.request.send({
+			path: ['messages'],
+			method: 'GET',
+			parameters,
+			options,
+			validator: MessageListApiResponseValidator,
+		});
+	}
 
-  async getAllMessagesFromAttendee(
-    input: GetAllMessagesFromAttendeeInput,
-    options?: RequestOptions,
-  ): Promise<MessageListApiResponse> {
-    const { attendee_id, cursor, before, after, limit } = input;
+	async getAllMessagesFromAttendee(
+		input: GetAllMessagesFromAttendeeInput,
+		options?: RequestOptions
+	): Promise<MessageListApiResponse> {
+		const { attendee_id, cursor, before, after, limit } = input;
 
-    const parameters: Record<string, string> = { ...options?.extra_params };
-    if (cursor) parameters.cursor = cursor;
-    if (before) parameters.before = before;
-    if (after) parameters.after = after;
-    if (limit) parameters.limit = String(limit);
+		const parameters: Record<string, string> = { ...options?.extra_params };
+		if (cursor) parameters.cursor = cursor;
+		if (before) parameters.before = before;
+		if (after) parameters.after = after;
+		if (limit) parameters.limit = String(limit);
 
-    return await this.client.request.send({
-      path: ['chat_attendees', attendee_id, 'messages'],
-      method: 'GET',
-      parameters,
-      options,
-      validator: MessageListApiResponseValidator,
-    });
-  }
+		return await this.client.request.send({
+			path: ['chat_attendees', attendee_id, 'messages'],
+			method: 'GET',
+			parameters,
+			options,
+			validator: MessageListApiResponseValidator,
+		});
+	}
 
-  async getAllChatsFromAttendee(input: GetAllChatsFromAttendeeInput, options?: RequestOptions): Promise<ChatListApiResponse> {
-    const { attendee_id, cursor, before, after, limit, account_id } = input;
+	async getAllChatsFromAttendee(
+		input: GetAllChatsFromAttendeeInput,
+		options?: RequestOptions
+	): Promise<ChatListApiResponse> {
+		const { attendee_id, cursor, before, after, limit, account_id } = input;
 
-    const parameters: Record<string, string> = { ...options?.extra_params };
-    if (cursor) parameters.cursor = cursor;
-    if (before) parameters.before = before;
-    if (after) parameters.after = after;
-    if (limit) parameters.limit = String(limit);
-    if (account_id) parameters.account_id = account_id;
+		const parameters: Record<string, string> = { ...options?.extra_params };
+		if (cursor) parameters.cursor = cursor;
+		if (before) parameters.before = before;
+		if (after) parameters.after = after;
+		if (limit) parameters.limit = String(limit);
+		if (account_id) parameters.account_id = account_id;
 
-    return await this.client.request.send({
-      path: ['chat_attendees', attendee_id, 'chats'],
-      method: 'GET',
-      parameters,
-      options,
-      validator: ChatListApiResponseValidator,
-    });
-  }
+		return await this.client.request.send({
+			path: ['chat_attendees', attendee_id, 'chats'],
+			method: 'GET',
+			parameters,
+			options,
+			validator: ChatListApiResponseValidator,
+		});
+	}
 
-  async getMessageAttachment(input: GetMessageAttachementInput, options?: RequestOptions): Promise<Blob> {
-    const { message_id, attachment_id } = input;
+	async getMessageAttachment(
+		input: GetMessageAttachementInput,
+		options?: RequestOptions
+	): Promise<Blob> {
+		const { message_id, attachment_id } = input;
 
-    return await this.client.request.send({
-      path: ['messages', message_id, 'attachments', attachment_id],
-      method: 'GET',
-      options,
-      ...(options?.extra_params && { parameters: options.extra_params }),
-      validator: untypedYetValidator,
-    });
-  }
+		return await this.client.request.send({
+			path: ['messages', message_id, 'attachments', attachment_id],
+			method: 'GET',
+			options,
+			...(options?.extra_params && { parameters: options.extra_params }),
+			validator: untypedYetValidator,
+		});
+	}
 
-  async getAllAttendees(input: GetAllAttendeesInput = {}, options?: RequestOptions): Promise<ChatAttendeeListApiResponse> {
-    const { cursor, limit, account_id } = input;
+	async getAllAttendees(
+		input: GetAllAttendeesInput = {},
+		options?: RequestOptions
+	): Promise<ChatAttendeeListApiResponse> {
+		const { cursor, limit, account_id } = input;
 
-    const parameters: Record<string, string> = { ...options?.extra_params };
-    if (cursor) parameters.cursor = cursor;
-    if (limit) parameters.limit = String(limit);
-    if (account_id) parameters.account_id = account_id;
+		const parameters: Record<string, string> = { ...options?.extra_params };
+		if (cursor) parameters.cursor = cursor;
+		if (limit) parameters.limit = String(limit);
+		if (account_id) parameters.account_id = account_id;
 
-    return await this.client.request.send({
-      path: ['chat_attendees'],
-      method: 'GET',
-      parameters,
-      options,
-      validator: ChatAttendeeListApiResponseValidator,
-    });
-  }
+		return await this.client.request.send({
+			path: ['chat_attendees'],
+			method: 'GET',
+			parameters,
+			options,
+			validator: ChatAttendeeListApiResponseValidator,
+		});
+	}
 
-  async getAttendee(attendee_id: string, options?: RequestOptions): Promise<ChatAttendeeResponse> {
-    return await this.client.request.send({
-      path: ['chat_attendees', attendee_id],
-      method: 'GET',
-      options,
-      ...(options?.extra_params && { parameters: options.extra_params }),
-      validator: ChatAttendeeResponseValidator,
-    });
-  }
+	async getAttendee(attendee_id: string, options?: RequestOptions): Promise<ChatAttendeeResponse> {
+		return await this.client.request.send({
+			path: ['chat_attendees', attendee_id],
+			method: 'GET',
+			options,
+			...(options?.extra_params && { parameters: options.extra_params }),
+			validator: ChatAttendeeResponseValidator,
+		});
+	}
 
-  async setChatStatus(input: PerformActionInput, options?: RequestOptions): Promise<ChatPatchedApiResponse> {
-    const { chat_id, action, value } = input;
+	async setChatStatus(
+		input: PerformActionInput,
+		options?: RequestOptions
+	): Promise<ChatPatchedApiResponse> {
+		const { chat_id, action, value } = input;
 
-    const body = {
-      ...options?.extra_params,
-      action,
-      value,
-    };
+		const body = {
+			...options?.extra_params,
+			action,
+			value,
+		};
 
-    return await this.client.request.send({
-      path: ['chats', chat_id],
-      method: 'PATCH',
-      body,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      options,
-      validator: ChatPatchedApiResponseValidator,
-    });
-  }
+		return await this.client.request.send({
+			path: ['chats', chat_id],
+			method: 'PATCH',
+			body,
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			options,
+			validator: ChatPatchedApiResponseValidator,
+		});
+	}
 }

@@ -1,5 +1,5 @@
-import { Static, Type } from "@sinclair/typebox";
-import { TypeCompiler } from "@sinclair/typebox/compiler";
+import { type Static, Type } from '@sinclair/typebox';
+import { TypeCompiler } from '@sinclair/typebox/compiler';
 
 // --------------------------------------------------------------------------
 // RESPONSE
@@ -9,12 +9,10 @@ import { TypeCompiler } from "@sinclair/typebox/compiler";
  * Schema when an account has been deleted with success
  */
 export const AccountDeletedApiResponseSchema = Type.Object({
-  object: Type.Literal("AccountDeleted"),
+	object: Type.Literal('AccountDeleted'),
 });
 
-export type AccountDeletedApiResponse = Static<
-  typeof AccountDeletedApiResponseSchema
->;
+export type AccountDeletedApiResponse = Static<typeof AccountDeletedApiResponseSchema>;
 
 // /**
 //  *
@@ -24,4 +22,6 @@ export type AccountDeletedApiResponse = Static<
 // );
 
 /**  */
-export const AccountDeletedApiResponseValidator = TypeCompiler.Compile(AccountDeletedApiResponseSchema);
+export const AccountDeletedApiResponseValidator = TypeCompiler.Compile(
+	AccountDeletedApiResponseSchema
+);

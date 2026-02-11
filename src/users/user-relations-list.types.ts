@@ -1,57 +1,50 @@
-import { Static, Type } from "@sinclair/typebox";
-import { TypeCompiler } from "@sinclair/typebox/compiler";
-import { EncodedQueryCursorType } from "../common/query-cursor.js";
-import { LargeListLimitQuerySchema } from "../common/query-parameters.type.js";
-import { UniqueIdSchema } from "../common/common.types.js";
-import { LinkedinUserRelationSchema } from "./ressource.types.js";
+import { type Static, Type } from '@sinclair/typebox';
+import { TypeCompiler } from '@sinclair/typebox/compiler';
+import { UniqueIdSchema } from '../common/common.types.js';
+import { EncodedQueryCursorType } from '../common/query-cursor.js';
+import { LargeListLimitQuerySchema } from '../common/query-parameters.type.js';
+import { LinkedinUserRelationSchema } from './ressource.types.js';
 
 // --------------------------------------------------------------------------
 // REQUEST
 // --------------------------------------------------------------------------
 
 export const UserRelationsListQuerySchema = Type.Union([
-  Type.Composite([
-    LargeListLimitQuerySchema,
-    Type.Object({ account_id: UniqueIdSchema }),
-  ]),
-  Type.Object({ account_id: UniqueIdSchema, cursor: EncodedQueryCursorType() }),
+	Type.Composite([LargeListLimitQuerySchema, Type.Object({ account_id: UniqueIdSchema })]),
+	Type.Object({ account_id: UniqueIdSchema, cursor: EncodedQueryCursorType() }),
 ]);
 
 const UserRelationsListDecodedCursorSchema = Type.Object({
-  limit: Type.Number(),
-  startIndex: Type.Number(),
+	limit: Type.Number(),
+	startIndex: Type.Number(),
 });
 
-export type UserRelationsListDecodedCursor = Static<
-  typeof UserRelationsListDecodedCursorSchema
->;
+export type UserRelationsListDecodedCursor = Static<typeof UserRelationsListDecodedCursorSchema>;
 
 export const UserRelationsListDecodedCursorValidator = TypeCompiler.Compile(
-  UserRelationsListDecodedCursorSchema
+	UserRelationsListDecodedCursorSchema
 );
 
-export const UserRelationsListQueryValidator = TypeCompiler.Compile(
-  UserRelationsListQuerySchema
-);
+export const UserRelationsListQueryValidator = TypeCompiler.Compile(UserRelationsListQuerySchema);
 
 // --------------------------------------------------------------------------
 // RESPONSE
 // --------------------------------------------------------------------------
 
 const UserRelationsListApiResponseSchema = Type.Object({
-  object: Type.Literal("UserRelationsList"),
-  items: Type.Array(
-    Type.Composite([
-      Type.Object({ object: Type.Literal("UserRelation") }),
-      LinkedinUserRelationSchema,
-    ])
-  ),
-  cursor: Type.Union([EncodedQueryCursorType(), Type.Null()]),
+	object: Type.Literal('UserRelationsList'),
+	items: Type.Array(
+		Type.Composite([
+			Type.Object({ object: Type.Literal('UserRelation') }),
+			LinkedinUserRelationSchema,
+		])
+	),
+	cursor: Type.Union([EncodedQueryCursorType(), Type.Null()]),
 });
 
-export type UserRelationsListApiResponse = Static<
-  typeof UserRelationsListApiResponseSchema
->;
+export type UserRelationsListApiResponse = Static<typeof UserRelationsListApiResponseSchema>;
 
 /**  */
-export const UserRelationsListApiResponseValidator = TypeCompiler.Compile(UserRelationsListApiResponseSchema);
+export const UserRelationsListApiResponseValidator = TypeCompiler.Compile(
+	UserRelationsListApiResponseSchema
+);

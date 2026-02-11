@@ -1,6 +1,6 @@
 import { TypeSystem } from '@sinclair/typebox/system';
 
-import { Base64, isBase64 } from './core.types.tmp.js';
+import { type Base64, isBase64 } from './core.types.tmp.js';
 
 /**
  * @note Opaque type.
@@ -12,6 +12,6 @@ export type EncodedQueryCursor = Base64 & { [validEncodedQueryCursor]: true };
  *
  */
 export const EncodedQueryCursorType = TypeSystem.Type<EncodedQueryCursor>(
-  'EncodedQueryCursor',
-  (options, value) => typeof value === 'string' && isBase64(value),
+	'EncodedQueryCursor',
+	(options, value) => typeof value === 'string' && isBase64(value)
 );

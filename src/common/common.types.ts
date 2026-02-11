@@ -1,4 +1,4 @@
-import { Kind, SchemaOptions, Static, Type, TypeRegistry } from '@sinclair/typebox';
+import { Kind, type SchemaOptions, type Static, Type, TypeRegistry } from '@sinclair/typebox';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { i18n } from './i18n.fake.js';
 
@@ -42,52 +42,52 @@ import { i18n } from './i18n.fake.js';
 TypeRegistry.Set('StringEnum', (schema: any, value) => schema.enum.includes(value));
 
 export const StringEnum = <T extends string[]>(values: [...T], options: SchemaOptions = {}) =>
-  Type.Unsafe<T[number]>({
-    ...options,
-    [Kind]: 'StringEnum',
-    type: 'string',
-    enum: values,
-  });
+	Type.Unsafe<T[number]>({
+		...options,
+		[Kind]: 'StringEnum',
+		type: 'string',
+		enum: values,
+	});
 
 TypeRegistry.Set('NumberEnum', (schema: any, value) => schema.enum.includes(value));
 
 export const NumberEnum = <T extends number[]>(values: [...T], options: SchemaOptions = {}) =>
-  Type.Unsafe<T[number]>({
-    ...options,
-    [Kind]: 'NumberEnum',
-    type: 'number',
-    enum: values,
-  });
+	Type.Unsafe<T[number]>({
+		...options,
+		[Kind]: 'NumberEnum',
+		type: 'number',
+		enum: values,
+	});
 
 /**
  *
  */
 export const UniqueIdSchema = Type.String({
-  title: 'UniqueId',
-  description: i18n.t('api.UniqueId.description'),
-  /**
-   * 128 bits of data encoded as 22 characters of the following alphabet :\n0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_.!~*'()
-   * example: "zYnh13HWV76_G3KyE-cAyg"
-   * @note This is very loose definition. Basically we're accepting any
-   *       non-empty string for now.
-   */
-  minLength: 1,
+	title: 'UniqueId',
+	description: i18n.t('api.UniqueId.description'),
+	/**
+	 * 128 bits of data encoded as 22 characters of the following alphabet :\n0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_.!~*'()
+	 * example: "zYnh13HWV76_G3KyE-cAyg"
+	 * @note This is very loose definition. Basically we're accepting any
+	 *       non-empty string for now.
+	 */
+	minLength: 1,
 });
 
 export function makeUniqueIdSchema(description: string) {
-  return Type.String({
-    ...UniqueIdSchema,
-    description: `${i18n.t('api.UniqueId.description')} ${description}`,
-  });
+	return Type.String({
+		...UniqueIdSchema,
+		description: `${i18n.t('api.UniqueId.description')} ${description}`,
+	});
 }
 
 export type UniqueId = Static<typeof UniqueIdSchema>;
 export const UniqueIdValidator = TypeCompiler.Compile(UniqueIdSchema);
 
 export const LinkedinRequestUrlSchema = Type.String({
-  title: 'LinkedinRequestUrl',
-  description: 'An url pointing to some Linkedin API feature',
-  pattern: `^https://www.linkedin.com/.*$`,
+	title: 'LinkedinRequestUrl',
+	description: 'An url pointing to some Linkedin API feature',
+	pattern: `^https://www.linkedin.com/.*$`,
 });
 
 export type LinkedinRequestUrl = Static<typeof LinkedinRequestUrlSchema>;

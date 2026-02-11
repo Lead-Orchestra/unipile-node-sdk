@@ -1,10 +1,10 @@
-import { Static, Type } from '@sinclair/typebox';
-import { WebhookAutoSchema, WebhookTriggerSchema } from './ressource.types.js';
+import { type Static, Type } from '@sinclair/typebox';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { UniqueIdSchema } from '../common/common.types.js';
-import { RequiredProps } from '../common/core.types.tmp.js';
-import { ListLimitQuerySchema, ListCursorQuerySchema } from '../common/query-parameters.type.js';
+import type { RequiredProps } from '../common/core.types.tmp.js';
 import { EncodedQueryCursorType } from '../common/query-cursor.js';
+import { ListCursorQuerySchema, ListLimitQuerySchema } from '../common/query-parameters.type.js';
+import { WebhookAutoSchema, WebhookTriggerSchema } from './ressource.types.js';
 
 // --------------------------------------------------------------------------
 // REQUEST
@@ -14,17 +14,19 @@ import { EncodedQueryCursorType } from '../common/query-cursor.js';
  *
  */
 export const WebhookListDecodedCursorSchema = Type.Composite([
-  Type.Required(ListLimitQuerySchema),
-  Type.Object({
-    cursor: Type.Object({
-      last_id: UniqueIdSchema,
-    }),
-  }),
+	Type.Required(ListLimitQuerySchema),
+	Type.Object({
+		cursor: Type.Object({
+			last_id: UniqueIdSchema,
+		}),
+	}),
 ]);
 
 export type WebhookListDecodedCursor = Static<typeof WebhookListDecodedCursorSchema>;
 
-export const WebhookListDecodedCursorValidator = TypeCompiler.Compile(WebhookListDecodedCursorSchema);
+export const WebhookListDecodedCursorValidator = TypeCompiler.Compile(
+	WebhookListDecodedCursorSchema
+);
 
 /**
  *
@@ -36,7 +38,10 @@ export type WebhookListBaseQuery = Static<typeof WebhookListBaseQuerySchema>;
 /**
  *
  */
-export const WebhookListQuerySchema = Type.Union([WebhookListBaseQuerySchema, ListCursorQuerySchema]);
+export const WebhookListQuerySchema = Type.Union([
+	WebhookListBaseQuerySchema,
+	ListCursorQuerySchema,
+]);
 
 export type WebhookListQuery = Static<typeof WebhookListQuerySchema>;
 
@@ -48,7 +53,9 @@ export const WebhookListQueryValidator = TypeCompiler.Compile(WebhookListQuerySc
 /**
  *
  */
-export type WebhookListQueryDTO = RequiredProps<WebhookListBaseQuery, 'limit'> | { cursor: WebhookListDecodedCursor };
+export type WebhookListQueryDTO =
+	| RequiredProps<WebhookListBaseQuery, 'limit'>
+	| { cursor: WebhookListDecodedCursor };
 
 // --------------------------------------------------------------------------
 // RESPONSE
@@ -58,19 +65,19 @@ export type WebhookListQueryDTO = RequiredProps<WebhookListBaseQuery, 'limit'> |
  *
  */
 export const WebhookListResponseSchema = Type.Object(
-  {
-    object: Type.Literal('WebhookList'),
-    items: Type.Array(
-      Type.Union([
-        Type.Composite([Type.Object({ object: Type.Literal('Webhook') }), WebhookAutoSchema]),
-        Type.Composite([Type.Object({ object: Type.Literal('Webhook') }), WebhookTriggerSchema]),
-      ]),
-    ),
-    cursor: Type.Union([EncodedQueryCursorType(), Type.Null()]),
-  },
-  {
-    description: '@todo',
-  },
+	{
+		object: Type.Literal('WebhookList'),
+		items: Type.Array(
+			Type.Union([
+				Type.Composite([Type.Object({ object: Type.Literal('Webhook') }), WebhookAutoSchema]),
+				Type.Composite([Type.Object({ object: Type.Literal('Webhook') }), WebhookTriggerSchema]),
+			])
+		),
+		cursor: Type.Union([EncodedQueryCursorType(), Type.Null()]),
+	},
+	{
+		description: '@todo',
+	}
 );
 
 export type WebhookListResponse = Static<typeof WebhookListResponseSchema>;

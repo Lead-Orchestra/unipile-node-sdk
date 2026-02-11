@@ -1,42 +1,52 @@
-import { UnipileClient } from '../client.js';
-import { RequestOptions } from '../types/index.js';
-import { WebhookCreateBody, WebhookCreateResponse, WebhookCreateResponseValidator } from '../webhooks/webhooks-create.types.js';
-import { WebhookDeleteResponse, WebhookDeleteResponseValidator } from '../webhooks/webhooks-delete.types.js';
-import { WebhookListResponse, WebhookListResponseValidator } from '../webhooks/webhooks-list.types.js';
+import type { UnipileClient } from '../client.js';
+import type { RequestOptions } from '../types/index.js';
+import {
+	type WebhookCreateBody,
+	type WebhookCreateResponse,
+	WebhookCreateResponseValidator,
+} from '../webhooks/webhooks-create.types.js';
+import {
+	type WebhookDeleteResponse,
+	WebhookDeleteResponseValidator,
+} from '../webhooks/webhooks-delete.types.js';
+import {
+	type WebhookListResponse,
+	WebhookListResponseValidator,
+} from '../webhooks/webhooks-list.types.js';
 
 export class WebhookResource {
-  constructor(private client: UnipileClient) {}
+	constructor(private client: UnipileClient) {}
 
-  async getAll(options?: RequestOptions): Promise<WebhookListResponse> {
-    return await this.client.request.send({
-      path: ['webhooks'],
-      method: 'GET',
-      options,
-      ...(options?.extra_params && { parameters: options.extra_params }),
-      validator: WebhookListResponseValidator,
-    });
-  }
+	async getAll(options?: RequestOptions): Promise<WebhookListResponse> {
+		return await this.client.request.send({
+			path: ['webhooks'],
+			method: 'GET',
+			options,
+			...(options?.extra_params && { parameters: options.extra_params }),
+			validator: WebhookListResponseValidator,
+		});
+	}
 
-  async create(input: WebhookCreateBody, options?: RequestOptions): Promise<WebhookCreateResponse> {
-    return await this.client.request.send({
-      path: ['webhooks'],
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: { ...options?.extra_params, ...input },
-      options,
-      validator: WebhookCreateResponseValidator,
-    });
-  }
+	async create(input: WebhookCreateBody, options?: RequestOptions): Promise<WebhookCreateResponse> {
+		return await this.client.request.send({
+			path: ['webhooks'],
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: { ...options?.extra_params, ...input },
+			options,
+			validator: WebhookCreateResponseValidator,
+		});
+	}
 
-  async delete(id: string, options?: RequestOptions): Promise<WebhookDeleteResponse> {
-    return await this.client.request.send({
-      path: ['webhooks', id],
-      method: 'DELETE',
-      options,
-      ...(options?.extra_params && { parameters: options.extra_params }),
-      validator: WebhookDeleteResponseValidator,
-    });
-  }
+	async delete(id: string, options?: RequestOptions): Promise<WebhookDeleteResponse> {
+		return await this.client.request.send({
+			path: ['webhooks', id],
+			method: 'DELETE',
+			options,
+			...(options?.extra_params && { parameters: options.extra_params }),
+			validator: WebhookDeleteResponseValidator,
+		});
+	}
 }

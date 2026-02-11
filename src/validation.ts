@@ -1,32 +1,34 @@
+import { Type } from '@sinclair/typebox';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import {
-  deleteAccountResponseSchema,
-  deleteWebhookResponseSchema,
-  getAccountSourceStatusResponseSchema,
-  getAccountsResponseSchema,
-  getAllChatAttendeesResponseSchema,
-  getAttendeeResponseSchema,
-  getChatAttendeesResponseSchema,
-  getChatMessagesResponseSchema,
-  getChatResponseSchema,
-  getChatsResponseSchema,
-  getMessageAttachementResponseSchema,
-  getMessageResponseSchema,
-  getMessagesResponseSchema,
-  getWebhooksResponseSchema,
-  postAccountResponseSchema,
-  postChatMessageResponseSchema,
-  postHostedAuthLinkResponseSchema,
-  postQrCodeBasedAccountSchema,
-  postWebhookResponseSchema,
+	deleteAccountResponseSchema,
+	deleteWebhookResponseSchema,
+	getAccountSourceStatusResponseSchema,
+	getAccountsResponseSchema,
+	getAllChatAttendeesResponseSchema,
+	getAttendeeResponseSchema,
+	getChatAttendeesResponseSchema,
+	getChatMessagesResponseSchema,
+	getChatResponseSchema,
+	getChatsResponseSchema,
+	getMessageAttachementResponseSchema,
+	getMessageResponseSchema,
+	getMessagesResponseSchema,
+	getWebhooksResponseSchema,
+	postAccountResponseSchema,
+	postChatMessageResponseSchema,
+	postHostedAuthLinkResponseSchema,
+	postQrCodeBasedAccountSchema,
+	postWebhookResponseSchema,
 } from './schemas/index.js';
-import { Type } from '@sinclair/typebox';
 
 // REQUEST
 export const untypedYetValidator = TypeCompiler.Compile(Type.Unknown());
 // ACCOUNT
 export const accountsValidator = TypeCompiler.Compile(getAccountsResponseSchema);
-export const accountSourceStatusValidator = TypeCompiler.Compile(getAccountSourceStatusResponseSchema);
+export const accountSourceStatusValidator = TypeCompiler.Compile(
+	getAccountSourceStatusResponseSchema
+);
 export const postAccountValidator = TypeCompiler.Compile(postAccountResponseSchema);
 export const postQrCodeBasedAccountValidator = TypeCompiler.Compile(postQrCodeBasedAccountSchema);
 export const deleteAccountValidator = TypeCompiler.Compile(deleteAccountResponseSchema);
@@ -41,7 +43,9 @@ export const getAttendeesValidator = TypeCompiler.Compile(getAllChatAttendeesRes
 export const getAttendeeValidator = TypeCompiler.Compile(getAttendeeResponseSchema);
 export const getMessagesValidator = TypeCompiler.Compile(getMessagesResponseSchema);
 export const getMessageValidator = TypeCompiler.Compile(getMessageResponseSchema);
-export const getMessageAttachementValidator = TypeCompiler.Compile(getMessageAttachementResponseSchema);
+export const getMessageAttachementValidator = TypeCompiler.Compile(
+	getMessageAttachementResponseSchema
+);
 // WEBHOOK
 export const getWebhooksValidator = TypeCompiler.Compile(getWebhooksResponseSchema);
 export const postWebhookValidator = TypeCompiler.Compile(postWebhookResponseSchema);
